@@ -56,7 +56,7 @@ public class ParkingSystem {
 
     private static void handleArrival(Scanner scanner) {
         if (availableSpots == 0) {
-            System.out.println("Parking is full. Cannot accept new arrivals.");
+            System.out.println("Parking is full. There is -NO SPACE-.");
             return;
         }
 
@@ -147,9 +147,9 @@ public class ParkingSystem {
     }
 
     static class CustomerRecord {
-        private int customerID;
-        private String licensePlate;
-        private int totalAmountPayable;
+         int customerID;
+         String licensePlate;
+         int totalAmountPayable;
 
         public CustomerRecord(int customerID, String licensePlate, int totalAmountPayable) {
             this.customerID = customerID;
