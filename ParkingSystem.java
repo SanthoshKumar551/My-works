@@ -12,7 +12,6 @@ public class ParkingSystem {
 
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
-
         System.out.println("Welcome to Parking Management System");
 
         while (true) {
@@ -69,9 +68,7 @@ public class ParkingSystem {
 
         boolean includeBase = includeBasePayment.equalsIgnoreCase("yes");
         int totalAmountPayable = includeBase ? basePayment : 0;
-
         System.out.println("Proceed to Parking");
-
         records.add(new CustomerRecord(++customerID, licensePlate, totalAmountPayable));
         availableSpots--;
     }
@@ -81,11 +78,10 @@ public class ParkingSystem {
             System.out.println("No customers parked yet.");
             return;
         }
-
+        
         System.out.print("Enter Customer ID for Departure: ");
         int departureID = scanner.nextInt();
         scanner.nextLine();
-
         for (CustomerRecord record : records) {
             if (record.getCustomerID() == departureID) {
                 int totalAmountPayable = record.getTotalAmountPayable();
@@ -99,7 +95,7 @@ public class ParkingSystem {
         }
         System.out.println("Customer ID not found. Please try again.");
     }
-
+    
     public static void viewParkingStatus() {
         System.out.println("Total Parking Spots: " + TOTAL_PARKING_SPOTS);
         System.out.println("Available Spots: " + availableSpots);
@@ -118,6 +114,7 @@ public class ParkingSystem {
         }
 
         System.out.println("Departed Customer Records:");
+        
         for (CustomerRecord record : departedRecords) {
             System.out.println(record.toString());
         }
