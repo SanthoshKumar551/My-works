@@ -7,6 +7,7 @@ public class ParkingSystem {
     static int availableSpots = TOTAL_PARKING_SPOTS;
     static int customerID = 0;
     static List<CustomerRecord> records = new ArrayList<>();
+    static List<CustomerRecord> departedRecords = new ArrayList<>();
     static int basePayment = 60;
 
     public static void main(String[] args) {
@@ -20,7 +21,7 @@ public class ParkingSystem {
             System.out.println("6. Calculate Total Revenue\n7. Update Base Payment\n8. Exit");
             System.out.print("Enter your choice: ");
             int choice = scanner.nextInt();
-            scanner.nextLine(); 
+            scanner.nextLine();
 
             switch (choice) {
                 case 1:
@@ -54,7 +55,7 @@ public class ParkingSystem {
         }
     }
 
-    private static void handleArrival(Scanner scanner) {
+    public static void handleArrival(Scanner scanner) {
         if (availableSpots == 0) {
             System.out.println("Parking is full. There is -NO SPACE-.");
             return;
@@ -75,7 +76,7 @@ public class ParkingSystem {
         availableSpots--;
     }
 
-    private static void handleDeparture(Scanner scanner) {
+    public static void handleDeparture(Scanner scanner) {
         if (records.isEmpty()) {
             System.out.println("No customers parked yet.");
             return;
@@ -83,7 +84,7 @@ public class ParkingSystem {
 
         System.out.print("Enter Customer ID for Departure: ");
         int departureID = scanner.nextInt();
-        scanner.nextLine(); 
+        scanner.nextLine();
 
         for (CustomerRecord record : records) {
             if (record.getCustomerID() == departureID) {
@@ -91,6 +92,7 @@ public class ParkingSystem {
                 System.out.println("Total Amount Payable: Rs. " + totalAmountPayable);
                 availableSpots++;
                 records.remove(record);
+                departedRecords.add(record);
                 System.out.println("Parking Spot Vacated.");
                 return;
             }
@@ -98,25 +100,30 @@ public class ParkingSystem {
         System.out.println("Customer ID not found. Please try again.");
     }
 
-    private static void viewParkingStatus() {
+    public static void viewParkingStatus() {
         System.out.println("Total Parking Spots: " + TOTAL_PARKING_SPOTS);
         System.out.println("Available Spots: " + availableSpots);
         System.out.println("Occupied Spots: " + (TOTAL_PARKING_SPOTS - availableSpots));
     }
 
-    private static void viewCustomerRecords() {
-        if (records.isEmpty()) {
+    public static void viewCustomerRecords() {
+        if (records.isEmpty() && departedRecords.isEmpty()) {
             System.out.println("No customer records available.");
             return;
         }
 
-        System.out.println("Customer Records:");
+        System.out.println("Currently Parked Customer Records:");
         for (CustomerRecord record : records) {
+            System.out.println(record.toString());
+        }
+
+        System.out.println("Departed Customer Records:");
+        for (CustomerRecord record : departedRecords) {
             System.out.println(record.toString());
         }
     }
 
-    private static void searchByLicensePlate(Scanner scanner) {
+    public static void searchByLicensePlate(Scanner scanner) {
         System.out.print("Enter License Plate Number to search: ");
         String searchPlate = scanner.nextLine();
 
@@ -127,29 +134,41 @@ public class ParkingSystem {
                 return;
             }
         }
+
+        for (CustomerRecord record : departedRecords) {
+            if (record.getLicensePlate().equalsIgnoreCase(searchPlate)) {
+                System.out.println("Matching Customer Record:");
+                System.out.println(record.toString());
+                return;
+            }
+        }
+
         System.out.println("No matching record found.");
     }
 
-    private static void calculateTotalRevenue() {
+    public static void calculateTotalRevenue() {
         int totalRevenue = 0;
         for (CustomerRecord record : records) {
+            totalRevenue += record.getTotalAmountPayable();
+        }
+        for (CustomerRecord record : departedRecords) {
             totalRevenue += record.getTotalAmountPayable();
         }
         System.out.println("Total Revenue: Rs. " + totalRevenue);
     }
 
-    private static void updateBasePayment(Scanner scanner) {
+    public static void updateBasePayment(Scanner scanner) {
         System.out.print("Enter new Base Payment amount: Rs. ");
         int newBasePayment = scanner.nextInt();
-        scanner.nextLine(); 
+        scanner.nextLine();
         basePayment = newBasePayment;
         System.out.println("Base Payment updated successfully.");
     }
 
     static class CustomerRecord {
-         int customerID;
-         String licensePlate;
-         int totalAmountPayable;
+        int customerID;
+        String licensePlate;
+        int totalAmountPayable;
 
         public CustomerRecord(int customerID, String licensePlate, int totalAmountPayable) {
             this.customerID = customerID;
@@ -168,7 +187,6 @@ public class ParkingSystem {
         public int getTotalAmountPayable() {
             return totalAmountPayable;
         }
-
 
         public String toString() {
             return "Customer ID: " + customerID + ", License Plate: " + licensePlate +
