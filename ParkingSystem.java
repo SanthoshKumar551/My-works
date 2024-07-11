@@ -8,7 +8,7 @@ public class ParkingSystem {
     static int customerID = 0;
     static List<CustomerRecord> records = new ArrayList<>();
     static List<CustomerRecord> departedRecords = new ArrayList<>();
-    static int basePayment = 60;
+    static int basePayment = 100;
 
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
@@ -63,10 +63,10 @@ public class ParkingSystem {
         System.out.print("Enter License Plate Number: ");
         String licensePlate = scanner.nextLine();
         System.out.println("Base Payment: Rs. " + basePayment);
-        System.out.print("Include Base Payment? (yes/no): ");
+        System.out.print("You have an membership ? (yes/no): ");
         String includeBasePayment = scanner.nextLine();
 
-        boolean includeBase = includeBasePayment.equalsIgnoreCase("yes");
+        boolean includeBase = includeBasePayment.equalsIgnoreCase("no");
         int totalAmountPayable = includeBase ? basePayment : 0;
         System.out.println("Proceed to Parking");
         records.add(new CustomerRecord(++customerID, licensePlate, totalAmountPayable));
